@@ -65,5 +65,3 @@ class Codewars
   end
 
 end
-
-Codewars.hack
