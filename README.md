@@ -7,7 +7,7 @@ CODEWARS_PASSWORD=yourcodewarspassword
 ```
 
 then just type
-`ruby codewars-hack`
+`ruby codewars_hack`
 in your console
 
 this is it, you won codewars :)
