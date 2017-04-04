@@ -12,3 +12,4 @@ in your console
 
 this is it, you won codewars :)
 
+ps: you must have an installed chrome-driver
