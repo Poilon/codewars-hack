@@ -14,9 +14,9 @@ this is it, you won codewars :)
 
 ps: you must have an installed chrome-driver
 
+--------------------------------------------
 
-
-*edito*
+*edit :o*
 
 *Codewars is a game where you have to make tests pass*
 
