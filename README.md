@@ -16,7 +16,7 @@ ps: you must have an installed chrome-driver
 
 --------------------------------------------
 
-*edit :o*
+*edito :*
 
 *Codewars is a game where you have to make tests pass*
 
