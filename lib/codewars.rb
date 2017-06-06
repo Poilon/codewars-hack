@@ -4,64 +4,60 @@ require 'timeout'
 class Codewars
 
   def self.hack
-    Dotenv.load
+    I18n.config.available_locales = :en
     browser = Watir::Browser.new(:chrome)
-    browser.goto('https://www.codewars.com/users/sign_in')
-    browser.text_field(id: 'user_email').set(ENV['CODEWARS_LOGIN'])
-    browser.text_field(id: 'user_password').set(ENV['CODEWARS_PASSWORD'])
-    browser.button(type: 'submit').click
-    browser.goto('https://www.codewars.com/kata/search/ruby')
-    browser.as(css: '.list-item.kata .item-title a').map(&:href).each do |kata_url|
-      begin
-        Timeout.timeout(20) do
-          browser.goto(kata_url + '/train/ruby')
-          browser.a(id: 'reset_btn').click
-          browser.a(css: '.confirm a.btn.is-green').click
-          browser.div(class: 'CodeMirror-scroll').click
-          change_equal(browser)
-          browser.a(id: 'attempt_btn').click
-          sleep(10)
-          browser.a(id: 'submit_btn').click
-        end
-      rescue
-        next
+    browser.goto('https://www.linkedin.com/')
+    browser.text_field(id: 'login-email').set('jean.ivan6969@gmail.com')
+    browser.text_field(id: 'login-password').set('jeanivan2')
+    browser.button(id: 'login-submit').click
+    res = ''
+
+    {
+      'https://www.linkedin.com/edu/alumni?id=12501' => 'upem',
+      'https://www.linkedin.com/edu/alumni?id=162147' => 'parisest',
+      'https://www.linkedin.com/edu/alumni?id=12350' => 'enpc',
+      'https://www.linkedin.com/edu/alumni?id=20041' => 'esiee',
+      'https://www.linkedin.com/edu/alumni?id=12351' => 'ensg',
+      'https://www.linkedin.com/edu/alumni?id=21233' => 'eavt'
+    }.each do |k, v|
+      browser.goto(k)
+      browser.text_field(id: 'alumni-search-start-year').set('2009')
+      150.times do
+        browser.as(class: 'image')[-2].scroll.to
+        sleep(1)
       end
+      res += (I18n.transliterate(browser.divs(class: 'profile-info').map(&:text).map do |e|
+        first_name = e.split("\n")&.first&.downcase&.split(' ')&.first
+        last_name = e.split("\n")&.first&.downcase&.split(' ')[1..-1]&.join
+        send(v, first_name, last_name)
+      end.join(', '))) + ' '
     end
+    puts res
   end
 
-  def self.change_equal(browser)
-    browser.send_keys(
-      "\n\nclass NilClass\n  def ==(o)\n  true\n",
-      :backspace,
-      :backspace,
-      "  end\n",
-      :backspace,
-      'end'
-    )
-    browser.send_keys(
-      "\nclass String\n  def ==(o)\n  true\n",
-      :backspace,
-      :backspace,
-      "  end\n",
-      :backspace,
-      'end'
-    )
-    browser.send_keys(
-      "\nclass Fixnum\n  def ==(o)\n  true\n",
-      :backspace,
-      :backspace,
-      "  end\n",
-      :backspace,
-      'end'
-    )
-    browser.send_keys(
-      "\nclass NilClass\n  def method_missing(*o)\n  nil\n",
-      :backspace,
-      :backspace,
-      "  end\n",
-      :backspace,
-      'end'
-    )
+
+
+  def self.upem(first_name, last_name)
+    "#{first_name}.#{last_name}@u-pem.fr"
   end
 
+  def self.parisest(first_name, last_name)
+    "#{first_name}.#{last_name}@univ-paris-est.fr"
+  end
+
+  def self.enpc(first_name, last_name)
+    "#{first_name}.#{last_name}@enpc.fr"
+  end
+
+  def self.esiee(first_name, last_name)
+    "#{first_name}.#{last_name}@esiee.fr"
+  end
+
+  def self.ensg(first_name, last_name)
+    "#{first_name}.#{last_name}@ensg.eu"
+  end
+
+  def self.eavt(first_name, last_name)
+    "#{first_name}.#{last_name}@marnelavallee.archi.fr"
+  end
 end
